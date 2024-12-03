@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 export default function RootLayout() {
   return (
     <Stack>
-      <Stack.Screen name="index" options={{ title: '@hgraph.io/sdk example' }} />
+      <Stack.Screen name="index" options={{ title: 'HWC Wallet Example' }} />
     </Stack>
   );
 }

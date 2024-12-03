@@ -7,7 +7,13 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 1. Install dependencies
 
    ```bash
-   npm install
+   npm install --legacy-peer-deps
+   ```
+
+2. Seup env vars
+
+   ```bash
+   cp .env.example .env
    ```
 
 2. Start the app
