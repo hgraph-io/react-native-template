@@ -3,7 +3,10 @@ import { currentNetwork } from "./network";
 
 // Hgraph client configuration
 const client = new Client({
-  network: currentNetwork === "testnet" ? Network.HederaTestnet : Network.HederaMainnet,
+  network:
+    currentNetwork === "testnet"
+      ? Network.HederaTestnet
+      : Network.HederaMainnet,
   environment: Environment.Production,
   token: undefined, // jwt
   headers: {},

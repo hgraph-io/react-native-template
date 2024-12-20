@@ -1,6 +1,8 @@
 import { NFTMetadata } from "../types";
 
-export async function decodeNFTMetadataIpfs(metadataHex: string): Promise<NFTMetadata | null> {
+export async function decodeNFTMetadataIpfs(
+  metadataHex: string,
+): Promise<NFTMetadata | null> {
   const ipfsPrefix = "ipfs://";
   const ipfsGateway = "https://gateway.pinata.cloud/ipfs/";
 

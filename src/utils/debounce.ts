@@ -1,4 +1,3 @@
-
 export default function debounce<Arguments extends any[]>(
   func: (...args: Arguments) => void,
   delay: number,
@@ -10,4 +9,4 @@ export default function debounce<Arguments extends any[]>(
       func(...args);
     }, delay);
   };
-};
+}

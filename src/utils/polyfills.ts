@@ -1,14 +1,16 @@
 import "@ethersproject/shims";
-import '@walletconnect/react-native-compat';
-import { polyfill } from 'react-native-polyfill-globals/src/encoding';
+import "@walletconnect/react-native-compat";
+import { polyfill } from "react-native-polyfill-globals/src/encoding";
 
 polyfill();
 
 // mock for matchMedia in @walletconnect/modal-core
-window.matchMedia = window.matchMedia || (function () {
+window.matchMedia =
+  window.matchMedia ||
+  function () {
     return {
-        matches: true,
-        addListener: function () { },
-        removeListener: function () { }
+      matches: true,
+      addListener: function () {},
+      removeListener: function () {},
     };
-});
+  };

@@ -27,8 +27,8 @@ export interface NFTCollectionRecord {
     {
       metadata: string;
       serial_number: number;
-    }
-  ]
+    },
+  ];
 }
 
 export type NFTMetadata = {
