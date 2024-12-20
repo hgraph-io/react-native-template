@@ -58,11 +58,13 @@ const NFTDisplay = ({ encodedMetadata, serialNumber }: NFTProps) => {
     );
   }
 
+  if (!nftMetadata) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.name}>{`#${serialNumber} ${
-        nftMetadata?.name ?? "Unknown NFT"
-      }`}</Text>
+      <Text style={styles.name}>{`#${serialNumber} ${nftMetadata.name}`}</Text>
       <View style={styles.frame}>
         {nftMetadata?.image ? (
           <Image
