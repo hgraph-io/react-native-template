@@ -1,0 +1,17 @@
+subscription RecentTokensTransfers {
+  transfers: token_transfer(
+    where: { amount: { _gt: 0 } }
+    order_by: { consensus_timestamp: desc }
+    limit: 20
+  ) {
+    amount
+    token_id
+    payer_account_id
+    account_id
+    consensus_timestamp
+    token {
+      symbol
+      decimals
+    }
+  }
+}

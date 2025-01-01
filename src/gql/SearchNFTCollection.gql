@@ -1,0 +1,22 @@
+query SearchNFTCollection($symbol: String!) {
+  collections: token(
+    where: {
+      type: { _eq: "NON_FUNGIBLE_UNIQUE" } # only NFT tokens
+      symbol: { _ilike: $symbol } # case insensitive search with wildcard support
+      nft_aggregate: { count: { predicate: { _gte: 1 } } } # only with a minted NFT
+    }
+    order_by: { created_timestamp: desc }
+    limit: 10
+  ) {
+    name
+    symbol
+    token_id
+    created_timestamp
+    treasury_account_id
+    # pick first nft for preview
+    nft(limit: 1, order_by: { serial_number: asc }) {
+      metadata
+      serial_number
+    }
+  }
+}

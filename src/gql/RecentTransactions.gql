@@ -1,0 +1,12 @@
+subscription RecentTransactions {
+  transactions: transaction(
+    limit: 20
+    order_by: { consensus_timestamp: desc }
+  ) {
+    consensus_timestamp
+    type
+    id
+    result
+    charged_tx_fee
+  }
+}
