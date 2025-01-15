@@ -63,6 +63,17 @@ export default function NftCollectionsSearch() {
         paddingBottom: 15,
       }}
     >
+      <Text>
+        Example of searching NFT collections by its symbol (сase-insensitive
+        partial search). Used debounce and abort controller mechanics for
+        correct search in real time. Also displaying one NFT for each collection
+        with an image, with simple decoded from ipfs metadata (if available)
+        with animations supported. GraphQL query placed on
+        <Text style={{ color: "#0088FF" }}>
+          {" "}
+          src/gql/SearchNFTCollection.gql
+        </Text>
+      </Text>
       <TextInput
         style={{
           height: 40,

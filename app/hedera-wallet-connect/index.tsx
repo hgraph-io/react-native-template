@@ -147,6 +147,11 @@ export default function WalletPage() {
         alignItems: "center",
       }}
     >
+      <Text>
+        Example of integration @hashgraph/hedera-wallet-connect with React
+        Native. Allows the hedera wallet to connect to the DApp via the
+        WalletConnect protocol and execute requests from the DApp.
+      </Text>
       <TextInput
         style={{
           height: 40,

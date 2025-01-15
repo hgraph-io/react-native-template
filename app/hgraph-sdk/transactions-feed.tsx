@@ -52,6 +52,15 @@ export default function TransactionsFeed() {
         margin: 15,
       }}
     >
+      <Text>
+        Example of subscribing and displaying recent transactions as a live feed
+        with a readable type and transaction success highlighting using
+        @hgraph.io/sdk. GraphQL subscription placed on
+        <Text style={{ color: "#0088FF" }}>
+          {" "}
+          src/gql/RecentTransactions.gql
+        </Text>
+      </Text>
       <Button
         onPress={toggle}
         title={subscription ? "Stop live feed" : "Start live feed"}

@@ -1402,7 +1402,7 @@
     tweetnacl "^1.0.3"
     utf8 "^3.0.0"
 
-"@hashgraph/hedera-wallet-connect@^1.3.7-canary.813a6d2.0":
+"@hashgraph/hedera-wallet-connect@^1.4.2":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@hashgraph/hedera-wallet-connect/-/hedera-wallet-connect-1.4.2.tgz#5dee8ff242603c602079d36ac9fb2221d16acd35"
   integrity sha512-ksvhKLtOkIJBDwZlTQOVyOhvUjE54JZm7gYnzKMO2I/LLx/uDykmytuVe10HMQnBid3nzvJ01NUU4hmyu7rfHQ==
@@ -1415,7 +1415,7 @@
     long "^5.2.3"
     protobufjs "7.2.5"
 
-"@hashgraph/sdk@^2.53.0":
+"@hashgraph/sdk@^2.56.0":
   version "2.56.0"
   resolved "https://registry.yarnpkg.com/@hashgraph/sdk/-/sdk-2.56.0.tgz#a73ab4fa52ff1ffeea54fea03d242e1991427075"
   integrity sha512-lIYRb6oahKdWFcbm8nPWLj6KcYTTbMgeTlrDw6PpBaRcFS2SfpmIzW+l+7Kc3Uw3iJnZ+pgY7svqYPO6B3ZK+w==
