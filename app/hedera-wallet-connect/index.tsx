@@ -195,9 +195,10 @@ export default function WalletPage() {
         }}
       />
       <Text>
-        Example of integration @hashgraph/hedera-wallet-connect with React
-        Native. Allows the hedera wallet to connect to the DApp via the
-        WalletConnect protocol and execute requests from the DApp.
+        Example of wallet management (create, export, import) and integration
+        @hashgraph/hedera-wallet-connect with React Native. Allows the hedera
+        wallet to connect to the DApp via the WalletConnect protocol and execute
+        requests from the DApp.
       </Text>
       {isLoading && <Text>Loading...</Text>}
       {!isLoading && !!walletAccount && (
