@@ -1,4 +1,4 @@
-import { Alert, Button, ScrollView } from "react-native";
+import { Alert, Button, ScrollView, Text } from "react-native";
 import { useState, useEffect } from "react";
 import hgraphClient from "@/src/utils/hgraph-client";
 import { RecentTokensTransfers } from "@/src/gql";
@@ -52,6 +52,15 @@ export default function TokensTransfersFeed() {
         margin: 15,
       }}
     >
+      <Text>
+        Example of subscribing and displaying recent transfers for fungible
+        tokens as a live feed using @hgraph.io/sdk. GraphQL subscription placed
+        on
+        <Text style={{ color: "#0088FF" }}>
+          {" "}
+          src/gql/RecentTokensTransfers.gql
+        </Text>
+      </Text>
       <Button
         onPress={toggleSubscription}
         title={subscription ? "Stop live feed" : "Start live feed"}
