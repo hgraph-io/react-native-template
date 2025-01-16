@@ -1,14 +1,57 @@
-import { Button, Text, View, Alert, TextInput } from "react-native";
+import { Button, Text, Alert, TextInput, ScrollView } from "react-native";
 import type { Web3WalletTypes } from "@walletconnect/web3wallet";
 import { getSdkError } from "@walletconnect/utils";
 import { Wallet } from "@hashgraph/hedera-wallet-connect";
+import { Stack, usePathname, useRouter } from "expo-router";
 import React, { useState, useEffect } from "react";
 import { currentNetwork } from "@/src/utils/network";
+import { HederaAccount } from "@/src/types";
+import {
+  deleteWalletAccount,
+  getSavedMnemonic,
+  importWalletAccount,
+} from "@/src/utils/account";
 
 export default function WalletPage() {
   const [logState, setLog] = useState("");
-  const [wallet, setWallet] = useState<Wallet>();
+  const [web3wallet, setWeb3Wallet] = useState<Wallet>();
+  const [walletAccount, setWalletAccount] = useState<HederaAccount | null>();
   const [pairUrl, onChangeUrl] = React.useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const path = usePathname();
+
+  useEffect(() => {
+    if (path !== "/hedera-wallet-connect") return;
+    if (!walletAccount) initWalletAccount();
+  }, [path]);
+
+  useEffect(() => {
+    if (walletAccount !== null && !web3wallet) {
+      initWalletConnect();
+    }
+  }, [walletAccount, web3wallet]);
+
+  const initWalletAccount = async () => {
+    setIsLoading(true);
+    const mnemonic = await getSavedMnemonic();
+    if (mnemonic) {
+      const account = await importWalletAccount(mnemonic);
+      setWalletAccount(account);
+    } else {
+      setWalletAccount(null);
+    }
+    setIsLoading(false);
+  };
+
+  const deleteWallet = async () => {
+    await disconnect();
+    deleteWalletAccount();
+    setLog("");
+    setWalletAccount(null);
+    setWeb3Wallet(undefined);
+  };
 
   const confirm = (message: string) =>
     new Promise((resolve) =>
@@ -27,7 +70,7 @@ export default function WalletPage() {
     setLog((currentLog) => currentLog + "\n" + message);
   }
 
-  async function init() {
+  async function initWalletConnect() {
     const projectId = process.env.EXPO_PUBLIC_WC_PROJECT_ID!;
     const metadata: Web3WalletTypes.Metadata = {
       name: process.env.EXPO_PUBLIC_WC_NAME!,
@@ -37,7 +80,7 @@ export default function WalletPage() {
     };
 
     const wallet = await Wallet.create(projectId, metadata);
-    setWallet(wallet);
+    setWeb3Wallet(wallet);
     /*
      * Add listeners
      */
@@ -46,7 +89,7 @@ export default function WalletPage() {
     wallet.on(
       "session_proposal",
       async (proposal: Web3WalletTypes.SessionProposal) => {
-        const accountId = process.env.EXPO_PUBLIC_ACCOUNT_ID!;
+        const accountId = walletAccount?.accountId.toString();
         const chainId = `hedera:${currentNetwork}`;
         const accounts: string[] = [`${chainId}:${accountId}`];
 
@@ -112,61 +155,93 @@ export default function WalletPage() {
   }
 
   async function pair(uri: string) {
-    wallet!.core.pairing.pair({ uri });
+    web3wallet!.core.pairing.pair({ uri });
   }
 
   async function disconnect() {
     //https://docs.walletconnect.com/web3wallet/wallet-usage#session-disconnect
-    for (const session of Object.values(wallet!.getActiveSessions())) {
+    for (const session of Object.values(web3wallet!.getActiveSessions())) {
       log(`Disconnecting from session: ${session}`);
-      await wallet!.disconnectSession({
+      await web3wallet!.disconnectSession({
         // @ts-ignore
         topic: session.topic,
         reason: getSdkError("USER_DISCONNECTED"),
       });
     }
-    for (const pairing of wallet!.core.pairing.getPairings()) {
+    for (const pairing of web3wallet!.core.pairing.getPairings()) {
       log(`Disconnecting from pairing: ${pairing}`);
-      await wallet!.disconnectSession({
+      await web3wallet!.disconnectSession({
         topic: pairing.topic,
         reason: getSdkError("USER_DISCONNECTED"),
       });
     }
   }
 
-  useEffect(() => {
-    init();
-  }, []);
-
   return (
-    <View
+    <ScrollView
       style={{
         flex: 1,
-        gap: 20,
-        justifyContent: "center",
+      }}
+      contentContainerStyle={{
+        rowGap: 20,
+        margin: 15,
         alignItems: "center",
       }}
     >
+      <Stack.Screen
+        options={{
+          title: "Hedera WalletConnect Example",
+        }}
+      />
       <Text>
         Example of integration @hashgraph/hedera-wallet-connect with React
         Native. Allows the hedera wallet to connect to the DApp via the
         WalletConnect protocol and execute requests from the DApp.
       </Text>
-      <TextInput
-        style={{
-          height: 40,
-          width: "50%",
-          margin: 12,
-          borderWidth: 1,
-          padding: 10,
-        }}
-        onChangeText={onChangeUrl}
-        value={pairUrl}
-        placeholder="Pair URI"
-      />
-      <Button disabled={!pairUrl} title="Pair" onPress={() => pair(pairUrl)} />
-      <Button title="Disconnect" onPress={disconnect} />
-      <Text>{logState}</Text>
-    </View>
+      {isLoading && <Text>Loading...</Text>}
+      {!isLoading && !!walletAccount && (
+        <>
+          <Text>Wallet Account Id: {walletAccount.accountId.toString()}</Text>
+          <TextInput
+            style={{
+              height: 40,
+              width: "50%",
+              borderWidth: 1,
+              padding: 10,
+            }}
+            onChangeText={onChangeUrl}
+            value={pairUrl}
+            placeholder="Pair URI"
+          />
+          <Button
+            disabled={!pairUrl}
+            title="Pair"
+            onPress={() => pair(pairUrl)}
+          />
+          <Button title="Disconnect" onPress={disconnect} />
+          <Button
+            title="Export Wallet"
+            onPress={() => router.navigate("/hedera-wallet-connect/export")}
+          />
+          <Button title="Delete Wallet" onPress={deleteWallet} />
+          <Text>{logState}</Text>
+        </>
+      )}
+      {!isLoading && walletAccount === null && (
+        <>
+          <Text style={{ fontWeight: "bold" }}>
+            Wallet not created, please create or import a wallet
+          </Text>
+          <Button
+            title="Create wallet"
+            onPress={() => router.navigate("/hedera-wallet-connect/create")}
+          />
+          <Button
+            title="Import wallet"
+            onPress={() => router.navigate("/hedera-wallet-connect/import")}
+          />
+        </>
+      )}
+    </ScrollView>
   );
 }

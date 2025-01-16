@@ -1,5 +1,6 @@
 import "@ethersproject/shims";
 import "@walletconnect/react-native-compat";
+import "@react-native-anywhere/polyfill-base64";
 import { polyfill } from "react-native-polyfill-globals/src/encoding";
 
 polyfill();
