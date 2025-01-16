@@ -71,6 +71,7 @@ export default function WalletPage() {
   }
 
   async function initWalletConnect() {
+    if (web3wallet) return;
     const projectId = process.env.EXPO_PUBLIC_WC_PROJECT_ID!;
     const metadata: Web3WalletTypes.Metadata = {
       name: process.env.EXPO_PUBLIC_WC_NAME!,

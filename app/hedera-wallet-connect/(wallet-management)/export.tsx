@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, Text, View, Alert } from "react-native";
-import { getSavedMnemonic } from "@/src/utils/account";
+import { getSavedMnemonic, importWalletAccount } from "@/src/utils/account";
 import { Stack, useRouter } from "expo-router";
 import * as Clipboard from "expo-clipboard";
 import MnemonicInput from "@/src/components/MnemonicInput";
+import { HederaAccount } from "@/src/types";
 
 export default function ExportWalletAccountPage() {
   const [mnemonicWords, setMnemonicWords] = useState<string[]>();
+  const [walletAccount, setWalletAccount] = useState<HederaAccount>();
 
   const router = useRouter();
   const loadMnemonic = async () => {
@@ -18,6 +20,8 @@ export default function ExportWalletAccountPage() {
       );
       router.navigate("/hedera-wallet-connect");
     } else {
+      const wallet = await importWalletAccount(mnemonic);
+      setWalletAccount(wallet);
       setMnemonicWords(mnemonic.toString().split(" "));
     }
   };
@@ -39,15 +43,26 @@ export default function ExportWalletAccountPage() {
           title: "Wallet Export",
         }}
       />
-      {mnemonicWords && (
+      {mnemonicWords && walletAccount && (
         <>
           <Text style={{ fontWeight: "bold" }}>
-            Keep the mnemonic phrase from your wallet in a safe place
+            Keep the mnemonic phrase & private key from your wallet in a safe place!
+          </Text>
+          <Text>
+            Private Key: {"\n"}
+            {walletAccount.privateKey.toStringDer()}
           </Text>
           <MnemonicInput mode="readonly" words={mnemonicWords} />
+
           <Button
-            title="Copy to Clipboard"
+            title="Copy Mnemonic"
             onPress={() => Clipboard.setStringAsync(mnemonicWords?.join(" "))}
+          />
+          <Button
+            title="Copy Private Key"
+            onPress={() =>
+              Clipboard.setStringAsync(walletAccount.privateKey.toStringDer())
+            }
           />
           <Button
             title="Done"

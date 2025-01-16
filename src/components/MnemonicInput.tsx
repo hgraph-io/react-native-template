@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
   wordText: {
     flex: 1,
     paddingVertical: 8,
+    marginRight: 20,
     height: 35,
     textAlign: "center",
   },

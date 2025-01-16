@@ -6,46 +6,9 @@ import {
   AccountId,
 } from "@hashgraph/sdk";
 import * as SecureStore from "expo-secure-store";
-import { getAccounts } from "./mirror-node";
 import { HederaAccount } from "../types";
 
 const mnemonicStorageKey = "wallet-mnemonic";
-
-export const getOrCreateAccount = async (publicKey: PublicKey) => {
-  const existAccounts = await getAccounts(publicKey.toStringRaw());
-
-  if (existAccounts.length > 0) {
-    const existAccount = existAccounts[0];
-    return {
-      accountId: AccountId.fromString(existAccount.account),
-      evmAddress: existAccount.evm_address as string,
-    };
-  }
-
-  const client = Client.forName(process.env.EXPO_PUBLIC_NETWORK!).setOperator(
-    process.env.EXPO_PUBLIC_OPERATOR_ID!,
-    process.env.EXPO_PUBLIC_OPERATOR_KEY!,
-  );
-
-  const evmAddress = publicKey.toEvmAddress();
-
-  let transaction = await new AccountCreateTransaction()
-    .setKey(publicKey)
-    .setAlias(evmAddress)
-    .signWithOperator(client);
-
-  const response = await transaction.execute(client);
-  const receipt = await response.getReceipt(client);
-
-  if (!receipt.accountId) {
-    throw new Error("Failed to create account");
-  }
-
-  return {
-    accountId: receipt.accountId,
-    evmAddress,
-  };
-};
 
 export async function saveMnemonic(mnemonic: Mnemonic) {
   await SecureStore.setItemAsync(mnemonicStorageKey, mnemonic.toString());
@@ -68,9 +31,12 @@ export async function importWalletAccount(
     const privateKey = await mnemonic.toStandardECDSAsecp256k1PrivateKey();
     const publicKey = privateKey.publicKey;
 
-    const accountInfo = await getOrCreateAccount(publicKey);
+    const evmAddress = publicKey.toEvmAddress();
+    const accountId = AccountId.fromEvmAddress(0, 0, evmAddress);
+
     return {
-      ...accountInfo,
+      accountId,
+      evmAddress,
       privateKey,
     };
   } catch (e) {
