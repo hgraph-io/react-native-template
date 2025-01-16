@@ -46,7 +46,8 @@ export default function ExportWalletAccountPage() {
       {mnemonicWords && walletAccount && (
         <>
           <Text style={{ fontWeight: "bold" }}>
-            Keep the mnemonic phrase & private key from your wallet in a safe place!
+            Keep the mnemonic phrase & private key from your wallet in a safe
+            place!
           </Text>
           <Text>
             Private Key: {"\n"}
