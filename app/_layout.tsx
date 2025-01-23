@@ -13,10 +13,10 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
-        name="hedera-wallet-connect/index"
+        name="hedera-wallet-connect"
         options={{
           title: "Wallet",
-          headerTitle: "HWC Wallet Demo",
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="wallet" size={20} color={color} />
           ),

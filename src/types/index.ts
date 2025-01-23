@@ -1,3 +1,5 @@
+import { AccountId, PrivateKey } from "@hashgraph/sdk";
+
 export interface TransactionRecord {
   type: number;
   id: string;
@@ -34,4 +36,10 @@ export interface NFTCollectionRecord {
 export type NFTMetadata = {
   name: string;
   image: string | null;
+};
+
+export type HederaAccount = {
+  accountId: AccountId;
+  evmAddress: string;
+  privateKey: PrivateKey;
 };

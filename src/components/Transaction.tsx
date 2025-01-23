@@ -48,7 +48,8 @@ const Transaction = ({
           {transationTypeName[type] ?? "Unknown"}
         </Text>
         <Text numberOfLines={1} style={[styles.text]}>
-          Fee: {Hbar.fromTinybars(charged_tx_fee).toString(HbarUnit.Hbar)}
+          Fee:{" "}
+          {Hbar.fromTinybars(charged_tx_fee.toString()).toString(HbarUnit.Hbar)}
         </Text>
       </View>
       <View style={styles.row}>

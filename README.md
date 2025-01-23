@@ -9,11 +9,9 @@ The template contains several examples of using [@hgraph.io/sdk](https://www.npm
 ### Wallet
 
 The entry point is at [app/hedera-wallet-connect/index.tsx](app/hedera-wallet-connect/index.tsx)
-This demo example of integration [@hashgraph/hedera-wallet-connect](https://www.npmjs.com/package/@hashgraph/hedera-wallet-connect) with React Native.
+This demo example of wallet management (create, export, import) and integration [@hashgraph/hedera-wallet-connect](https://www.npmjs.com/package/@hashgraph/hedera-wallet-connect) with React Native.
 
 Allows the hedera wallet to connect to the DApp via the WalletConnect protocol and execute requests from the DApp, such as signing messages and transactions, executing requests and transactions, etc. in accordance with [HIP-820](https://hips.hedera.com/hip/hip-820).
-
-You can create a testnet wallet using the [Hedera portal](https://portal.hedera.com/dashboard).
 
 To use the example, please create a project in [Reown Cloud](https://cloud.reown.com) and fill in the variables in .env.
 
